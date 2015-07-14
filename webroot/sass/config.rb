@@ -1,0 +1,10 @@
+http_path = "/Apps/mycake3.app/"
+sass_dir = 'webroot/sass'
+css_dir = '../css'
+images_dir = '../img'
+javascripts_dir = '../js'
+http_stylesheets\_path = 'css'
+http_javascripts\_path = 'js'
+http_images\_path = 'img'
+environment = :development
+output_style = :compressed

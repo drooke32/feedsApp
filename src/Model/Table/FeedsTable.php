@@ -1,0 +1,64 @@
+<?php
+namespace App\Model\Table;
+
+use App\Model\Entity\Feed;
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\Validation\Validator;
+
+/**
+ * Feeds Model
+ *
+ * @property \Cake\ORM\Association\HasMany $UsersFavourites
+ * @property \Cake\ORM\Association\BelongsToMany $Users
+ */
+class FeedsTable extends Table
+{
+
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        $this->table('feeds');
+        $this->displayField('id');
+        $this->primaryKey('id');
+        $this->addBehavior('Timestamp');
+        $this->hasMany('UsersFavourites', [
+            'foreignKey' => 'feed_id'
+        ]);
+        $this->belongsToMany('Users', [
+            'foreignKey' => 'feed_id',
+            'targetForeignKey' => 'user_id',
+            'joinTable' => 'users_feeds'
+        ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create');
+            
+        $validator
+            ->requirePresence('sitename', 'create')
+            ->notEmpty('sitename')
+            ->add('sitename', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            
+        $validator
+            ->requirePresence('url', 'create')
+            ->notEmpty('url');
+
+        return $validator;
+    }
+}
