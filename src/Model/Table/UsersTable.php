@@ -54,7 +54,11 @@ class UsersTable extends Table
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-            
+        
+        $validator
+            ->requirePresence('email', 'create')
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+        
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
             ->requirePresence('email', 'create')
@@ -62,12 +66,12 @@ class UsersTable extends Table
             
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmpty('password')
+            ->add('password', ['compare' => ['rule' => ['compareWith', 'confirm_password']]]);
             
         $validator
             ->add('verified', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('verified', 'create')
-            ->notEmpty('verified');
+            ->allowEmpty('verified', 'create');
 
         return $validator;
     }

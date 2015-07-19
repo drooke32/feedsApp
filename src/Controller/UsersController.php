@@ -11,6 +11,10 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+    public function beforeFilter(\Cake\Event\Event $event) {
+        $this->Auth->allow(['add']);
+    }
+    
     /**
      * Index method
      *
@@ -50,9 +54,10 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Feeds', 'action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                return $this->redirect(['action' => 'login']);
             }
         }
         $feeds = $this->Users->Feeds->find('list', ['limit' => 200]);
@@ -103,5 +108,21 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function login(){
+        if($this->request->is('post')){
+            $user = $this->Auth->identify();
+            if($user){
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error('Your username or password is incorrect.');
+        }
+    }
+    
+    public function logout(){
+        $this->Flash->succes('You have been logged out successfully.');
+        return $this->redirect($this->Auth->logout());
     }
 }
