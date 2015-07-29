@@ -23,40 +23,15 @@ $description = 'FeedLife';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <div class="site-wrapper">
-        <div class="site-wrapper-inner">
-            <div class="cover-container">
-                <div class="masthead clearfix">
-                    <div class="inner">
-                        <h3 class='masthead-brand'>
-                            <em>
-                             <?= $this->Html->link('FEEDLife', '/users/login'); ?>
-                            </em>
-                        </h3>
-                        <nav>
-                            <ul class="nav masthead-nav">
-                                <li>
-                                    <a href="#">Feed</a>
-                                </li>
-                                <li>
-                                    <a href="#">Requests</a>
-                                </li>
-                                <li>
-                                    <a href="#">Account</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="inner cover">
-                    <?= $this->Flash->render() ?>
-                    <?= $this->fetch('content') ?>
-                </div>
-                <div class="mastfoot">
-                    <div class="inner">
-                        <? //add footer stuff here ?>
-                    </div>
-                </div>
+    <div class="container">
+        <?= $this->element('Nav/header'); ?>
+        <div class="inner cover">
+            <?= $this->Flash->render() ?>
+            <?= $this->fetch('content') ?>
+        </div>
+        <div class="mastfoot">
+            <div class="inner">
+                <? //add footer stuff here ?>
             </div>
         </div>
     </div>
