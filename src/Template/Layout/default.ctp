@@ -15,6 +15,7 @@ $description = 'FeedLife';
     <?= $this->Html->css('bootstrap-theme.css') ?>
     <?= $this->Html->css('bootstrap.css') ?>
     <?= $this->Html->css('styles.css') ?>
+    <?= $this->Html->css('font-awesome.min.css') ?>
     <?= $this->Html->script('jquery-2.1.4.min.js') ?>
     <?= $this->Html->script('bootstrap.min.js') ?>
 
