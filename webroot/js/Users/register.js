@@ -14,15 +14,19 @@ $(function(){
 });
 
 function validateRegistration(){
-    $.post("/users/register", $("#regForm").serialize())
+    $.post("/users/ajax_register", $("#regForm").serialize())
         .done(validateSuccess)
         .fail(validateFail)
         .always(validateComplete);
 }
 
 function validateSuccess(e){
-    //redirect to the users feed page
+    $('#regSubmit').find('.fa-cog').addClass('hidden');
+    //if success code
+    
+    //redirect to the users feed page    
     window.redirect("/feeds/list");
+    //if fail code
 }
 
 function validateFail(e){

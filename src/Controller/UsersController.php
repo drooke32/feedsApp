@@ -11,8 +11,13 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+    public function initialize(){
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+    }
+    
     public function beforeFilter(\Cake\Event\Event $event) {
-        $this->Auth->allow(['add']);
+        $this->Auth->allow(['add', 'ajax_register']);
     }
     
     /**
@@ -41,8 +46,8 @@ class UsersController extends AppController
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
-
-    /**
+            
+        /**
      * Add method
      *
      * @return void Redirects on successful add, renders view otherwise.
@@ -64,7 +69,7 @@ class UsersController extends AppController
         $this->set(compact('user', 'feeds'));
         $this->set('_serialize', ['user']);
     }
-
+    
     /**
      * Edit method
      *
@@ -125,5 +130,24 @@ class UsersController extends AppController
     public function logout(){
         $this->Flash->success('You have been successfully logged out.');
         return $this->redirect($this->Auth->logout());
+    }
+    
+    public function ajax_register(){
+        $this->layout = 'ajax';
+        $user = $this->Users->newEntity();
+        $this->autoRender = false;
+        $data = array();
+        if ($this->request->is('ajax')) {
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Registration Successful.'));
+                $data = array('success'=>'success');
+                $this->response->statusCode(200);
+            } else {
+                $data = array('fail'=>'fail', 'errors'=> $this->Users->invalidFields());
+            }
+        }
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
     }
 }
